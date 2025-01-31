@@ -1,0 +1,33 @@
+{
+  "kind": "collectionType",
+  "collectionName": "budgets",
+  "info": {
+    "singularName": "budget",
+    "pluralName": "budgets",
+    "displayName": "Budget"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "title": {
+      "type": "string",
+      "required": true,
+      "unique": false
+    },
+    "slug": {
+      "type": "string",
+      "required": true,
+      "unique": true
+    },
+    "startAmount": {
+      "type": "decimal",
+      "required": true
+    },
+    "startDate": {
+      "type": "datetime",
+      "required": true
+    }
+  }
+}
