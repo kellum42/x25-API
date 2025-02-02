@@ -1,0 +1,28 @@
+{
+  "kind": "collectionType",
+  "collectionName": "verifications",
+  "info": {
+    "singularName": "verification",
+    "pluralName": "verifications",
+    "displayName": "Verification"
+  },
+  "options": {
+    "draftAndPublish": true
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "date": {
+      "type": "date",
+      "required": true
+    },
+    "amount": {
+      "type": "decimal"
+    },
+    "item": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::item.item",
+      "inversedBy": "verifications"
+    }
+  }
+}

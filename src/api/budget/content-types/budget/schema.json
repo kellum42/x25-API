@@ -4,7 +4,8 @@
   "info": {
     "singularName": "budget",
     "pluralName": "budgets",
-    "displayName": "Budget"
+    "displayName": "Budget",
+    "description": ""
   },
   "options": {
     "draftAndPublish": true
@@ -26,8 +27,14 @@
       "required": true
     },
     "startDate": {
-      "type": "datetime",
+      "type": "date",
       "required": true
+    },
+    "items": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::item.item",
+      "mappedBy": "budget"
     }
   }
 }
