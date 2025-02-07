@@ -1,0 +1,5 @@
+
+
+Completed:
+- Calculate starting balance in the /budgets api call.
+- Do all balance calculation on the api. 
