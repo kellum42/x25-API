@@ -5,7 +5,7 @@
 import { factories, Core } from '@strapi/strapi';
 import { Entity } from '@strapi/types/dist/data';
 import dayjs, { Dayjs } from 'dayjs';
-import { calculateBalance } from '../../../x25/budget';
+import { calculateBalance, getFriday } from '../../../x25/budget';
 import { AnyDocument } from '@strapi/types/dist/modules/documents';
 import { ApiItemItem } from '../../../../types/generated/contentTypes';
 
@@ -56,6 +56,20 @@ const convertTox25Item = (item: Entity<"api::item.item">): x25Item => {
   }
 }
 
+const getBudgetItems = async (documentId: string): Promise<Entity<"api::item.item">[]> => {
+  const items: Entity<"api::item.item">[] = await strapi.documents('api::item.item').findMany({
+    status: "published",
+    filters: {
+      budget: {
+        documentId: {
+          $eq: documentId
+        },
+      }
+    }
+  });
+  return items;
+}
+
 export default factories.createCoreService('api::budget.budget', ({ strapi }: { strapi: Core.Strapi }) => ({
   async find(...args) {
     // const { results, pagination } = await super.find(...args);
@@ -63,34 +77,50 @@ export default factories.createCoreService('api::budget.budget', ({ strapi }: { 
     const response: PaginatedEntities = await super.find(...args);
     const { results, pagination } = response;
 
-    if (results === null) {
-      return { results, pagination };
-    }
+    // if (results === null) {
+    //   return { results, pagination };
+    // }
 
-    for (const budget of results) {
-      const items: Entity<"api::item.item">[] = await strapi.documents('api::item.item').findMany({
-        status: "published",
-        filters: {
-          budget: {
-            documentId: {
-              $eq: budget.documentId
-            },
-          }
-        }
-      });
+    // for (const budget of results) {      
+    //   const items = await getBudgetItems(budget.documentId);
 
-      const startdate = dayjs(budget.startDate);
-      const balance = parseFloat(budget.startAmount);
+    //   const startdate = dayjs(budget.startDate);
+    //   const balance = parseFloat(budget.startAmount);
 
-      const x25items = items.map(i => convertTox25Item(i))
+    //   const x25items = items.map(i => convertTox25Item(i))
 
-      // Calculate current balance.
-      const current = await calculateBalance(startdate, balance, x25items, dayjs());
+    //   // Calculate current balance.
+    //   const current = await calculateBalance(startdate, balance, x25items, dayjs());
 
-      budget.current = current;
-      budget.itemCount = items.length;
-    }
+    //   budget.current = current;
+    //   budget.itemCount = items.length;
+    // }
 
     return { results, pagination };
-  }
+  },
+
+  async findOne(docId, params) {
+    const result: AnyDocument|null = await super.findOne(docId, params);
+    
+    // if ( result ){
+    //   const items = await getBudgetItems(result.documentId);
+
+    //   const startdate = dayjs(result.startDate);
+    //   const balance = parseFloat(result.startAmount);
+
+    //   const x25items = items.map(i => convertTox25Item(i))
+
+    //   // Calculate current balance.
+    //   const current = await calculateBalance(startdate, balance, x25items, dayjs());
+
+    //   // Calculate start of week balance.
+    //   const startOfWeek = await calculateBalance(getFriday(startdate), balance, x25items, dayjs());
+
+    //   result.current = current;
+    //   result.startOfWeek = startOfWeek;
+    //   result.itemCount = items.length;
+    // }
+
+    return result;
+  },
 }));

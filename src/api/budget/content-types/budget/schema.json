@@ -35,6 +35,18 @@
       "relation": "oneToMany",
       "target": "api::item.item",
       "mappedBy": "budget"
+    },
+    "parent": {
+      "type": "relation",
+      "relation": "manyToOne",
+      "target": "api::budget.budget",
+      "inversedBy": "simulations"
+    },
+    "simulations": {
+      "type": "relation",
+      "relation": "oneToMany",
+      "target": "api::budget.budget",
+      "mappedBy": "parent"
     }
   }
 }

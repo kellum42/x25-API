@@ -224,3 +224,8 @@ export const daysTillNextOccurrence = (item: x25Item, _from: Dayjs, i?: number):
   // Should never get here.
   return "";
 }
+
+export const getFriday = (from: Dayjs): Dayjs => {
+  const daysFromFriday = (from.day() + 2) % 7;
+  return from.subtract(daysFromFriday, 'day');
+}

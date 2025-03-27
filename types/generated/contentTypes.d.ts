@@ -391,7 +391,9 @@ export interface ApiBudgetBudget extends Struct.CollectionTypeSchema {
       'api::budget.budget'
     > &
       Schema.Attribute.Private;
+    parent: Schema.Attribute.Relation<'manyToOne', 'api::budget.budget'>;
     publishedAt: Schema.Attribute.DateTime;
+    simulations: Schema.Attribute.Relation<'oneToMany', 'api::budget.budget'>;
     slug: Schema.Attribute.String &
       Schema.Attribute.Required &
       Schema.Attribute.Unique;
